@@ -18,12 +18,12 @@ namespace ImportExcelFIle.DotNETCore.Models
         {
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<ZoneMap> ZoneMap { get; set; }
+        public DbSet<Zone> Zone { get; set; }
         public DbSet<ZoneMap_New> ZoneMap_New { get; set; }
         public DbSet<ZipCluster_New> ZipCluster_New { get; set; }
-        public DbSet<ZIPCluster> ZIPCluster { get; set; }
-        public DbSet<Zone> Zone { get; set; }
-        public DbSet<ZIPCluster> GetZipClusters { get; set; }
+        //  public DbSet<ZIPCluster> ZIPCluster { get; set; }
+        // public DbSet<ZoneMap> ZoneMap { get; set; }
+
     }
     }
 

@@ -31,7 +31,6 @@ namespace ImportExcelFIle.DotNETCore
                   "CorsPolicy",
                   builder => builder.WithOrigins(Configuration["ServiceUrls:AngularUrl"]) //local url
                   /* builder => builder.WithOrigins(Configuration["ServiceUrls:QAUrl"])*///qa url
-                                                                                         //builder => builder.WithOrigins(iConfiguration["ServiceUrls:AngularUrl"],iConfiguration["ServiceUrls:QAUrl"])//Angular + QA url
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowAnyOrigin()
@@ -67,7 +66,7 @@ namespace ImportExcelFIle.DotNETCore
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=ExportExcel}/{id?}");
             });
         }
     }
