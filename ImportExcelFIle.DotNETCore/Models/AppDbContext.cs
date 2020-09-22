@@ -21,6 +21,7 @@ namespace ImportExcelFIle.DotNETCore.Models
         public DbSet<Zone> Zone { get; set; }
         public DbSet<ZoneMap_New> ZoneMap_New { get; set; }
         public DbSet<ZipCluster_New> ZipCluster_New { get; set; }
+        public DbSet<OverNightMap> OverNightMap { get; set; }
         //  public DbSet<ZIPCluster> ZIPCluster { get; set; }
         // public DbSet<ZoneMap> ZoneMap { get; set; }
 

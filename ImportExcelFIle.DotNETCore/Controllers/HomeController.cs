@@ -63,5 +63,27 @@ namespace ImportExcelFIle.DotNETCore.Controllers
             return Ok();
 
         }
+
+
+        public ActionResult ImportOverNightMapData([FromBody] ExcelColumnsDTO col)
+        {
+            try
+            {
+                OverNightMap onMap = new OverNightMap();
+                onMap.OriginZip = col.originClusterEndZip;
+                onMap.FromZip = col.startZip;
+                onMap.ToZip = col.endZip;
+                context.OverNightMap.Add(onMap);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
+
+            return Ok();
+
+        }
     }
 }
