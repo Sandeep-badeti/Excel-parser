@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ImportExcelFIle.DotNETCore.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ImportExcelFIle.DotNETCore.Controllers
 {
@@ -65,17 +66,21 @@ namespace ImportExcelFIle.DotNETCore.Controllers
         }
 
         [HttpPost]
-        public ActionResult ImportOverNightMapData([FromBody] OverNightMap col)
+        public ActionResult ImportOverNightMapData([FromBody] List<OverNightMap> col)
         {
             try
             {
-                OverNightMap onMap = new OverNightMap();
-                onMap.Zipcode = col.Zipcode;
-                onMap.StartZip = col.StartZip;
-                onMap.EndZip = col.EndZip;
-                onMap.Id = col.Id;
-                context.OverNightMap.Add(onMap);
+               // OverNightMap onMap = new OverNightMap();
+                //onMap.Zipcode = col.Zipcode;
+                //onMap.StartZip = col.StartZip;
+                //onMap.EndZip = col.EndZip;
+                //onMap.Id = col.Id;
+
+
+                context.OverNightMap.AddRange(col);
                 context.SaveChanges();
+
+             //   context.ZipVerify.AddRange(col);
             }
             catch (Exception ex)
             {
@@ -85,6 +90,14 @@ namespace ImportExcelFIle.DotNETCore.Controllers
 
             return Ok();
 
+        }
+
+
+        [HttpGet]
+        public ActionResult GetZipcode()
+        {
+            var zipcode = context.ZipStatus.Where(x => x.Status == null).First();
+            return Ok(zipcode);
         }
     }
 }

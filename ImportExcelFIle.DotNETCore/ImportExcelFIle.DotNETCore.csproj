@@ -15,10 +15,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\cypras\" />
-  </ItemGroup>
-
 
 
 </Project>
