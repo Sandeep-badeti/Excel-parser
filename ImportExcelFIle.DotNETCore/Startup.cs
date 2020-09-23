@@ -56,6 +56,8 @@ namespace ImportExcelFIle.DotNETCore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseDefaultFiles();
+
             app.UseStaticFiles();
 
             app.UseRouting();

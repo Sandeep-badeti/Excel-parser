@@ -43,20 +43,33 @@ function ProcessZipCluster(zipcode, data) {
     data.forEach(cluster => {
         let zips = cluster.split("-");
         console.log();
-        PostToDB({ zipcode: zipcode, startZip: zips[0].trim(), endZip: zips[1].trim() });
+        PostToDB({ Zipcode: zipcode, StartZip: zips[0].trim(), EndZip: zips[1].trim() });
     });
 }
 
 function PostToDB(_data) {
-    fetch('<api-url>', {
-        method: "POST",
-        body: JSON.stringify(_data),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    })
-        .then(
-            response => response.json()
-            , err => console.log(err)
-        );
+    //fetch('http://localhost:60957/Home/ImportOverNightMapData', {
+    //    method: "POST",
+    //    body: JSON.stringify(_data),
+    //    headers: {
+    //        'Accept': 'application/json; charset=utf-8',
+    //        'Content-Type': 'application/json;charset=UTF-8'
+    //    }
+    //})
+    //    .then(
+    //        response => response.json()
+    //        , err => console.log(err)
+    //);
+
+    cy
+        .request('POST', 'http://localhost:60957/Home/ImportOverNightMapData', { Zipcode: _data.Zipcode, StartZip: _data.StartZip, EndZip: _data.EndZip })
+        .then((response) => {
+            // response.body is automatically serialized into JSON
+            //expect(response.body).to.have.property('name', 'Jane') // true
+            console.log(response);
+        })
+
+
     //     .then(json => console.log(json));
     // .catch (err => console.log(err));
     // });

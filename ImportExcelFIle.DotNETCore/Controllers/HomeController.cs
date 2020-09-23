@@ -64,15 +64,16 @@ namespace ImportExcelFIle.DotNETCore.Controllers
 
         }
 
-
-        public ActionResult ImportOverNightMapData([FromBody] ExcelColumnsDTO col)
+        [HttpPost]
+        public ActionResult ImportOverNightMapData([FromBody] OverNightMap col)
         {
             try
             {
                 OverNightMap onMap = new OverNightMap();
-                onMap.OriginZip = col.originClusterEndZip;
-                onMap.FromZip = col.startZip;
-                onMap.ToZip = col.endZip;
+                onMap.Zipcode = col.Zipcode;
+                onMap.StartZip = col.StartZip;
+                onMap.EndZip = col.EndZip;
+                onMap.Id = col.Id;
                 context.OverNightMap.Add(onMap);
                 context.SaveChanges();
             }
