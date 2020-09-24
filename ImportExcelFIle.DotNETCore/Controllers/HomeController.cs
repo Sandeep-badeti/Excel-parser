@@ -70,24 +70,23 @@ namespace ImportExcelFIle.DotNETCore.Controllers
         {
             try
             {
-               // OverNightMap onMap = new OverNightMap();
-                //onMap.Zipcode = col.Zipcode;
-                //onMap.StartZip = col.StartZip;
-                //onMap.EndZip = col.EndZip;
-                //onMap.Id = col.Id;
-
-
-                context.OverNightMap.AddRange(col);
-                context.SaveChanges();
-
-             //   context.ZipVerify.AddRange(col);
+                var isExist = context.OverNightMap.Where(x => x.Zipcode == col[0].Zipcode).Count();
+                if(isExist == 0)
+                {
+                    context.OverNightMap.AddRange(col);
+                    var zipStatus = context.ZipStatus.Where(x => x.Zip == col[0].Zipcode).FirstOrDefault();
+                    if(zipStatus.Status==false)
+                    {
+                        zipStatus.Status = true;
+                        context.ZipStatus.Update(zipStatus);
+                        context.SaveChanges();
+                    }             
+                }           
             }
             catch (Exception ex)
             {
                 return Ok(ex);
             }
-
-
             return Ok();
 
         }
@@ -96,8 +95,14 @@ namespace ImportExcelFIle.DotNETCore.Controllers
         [HttpGet]
         public ActionResult GetZipcode()
         {
-            var zipcode = context.ZipStatus.Where(x => x.Status == null).First();
-            return Ok(zipcode);
+            var zipcode = context.ZipStatus.Where(x => x.Status == null).FirstOrDefault();
+            if (zipcode != null)
+            {
+                zipcode.Status = false;
+                context.ZipStatus.Update(zipcode);
+                context.SaveChanges();
+            }
+            return Ok(zipcode.Zip==null? null: zipcode.Zip);
         }
     }
 }

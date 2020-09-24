@@ -11,6 +11,6 @@ namespace ImportExcelFIle.DotNETCore.Models
         [Key]
         public int Id { get; set; }
         public string Zip { get; set; }
-        public Boolean Status { get; set; }
+        public Boolean? Status { get; set; }
     }
 }
