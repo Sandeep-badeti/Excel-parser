@@ -30,24 +30,19 @@ describe('sample', function () {
        // zip = "10310";
 
         setInterval(() => {
-            cy
-            .request('GET', 'http://localhost:60957/Home/GetZipcode')
-            .then(
-                (response) => {
-                    let zip = response.body;
-                    cy.get('input[name="originZip"]').clear();
-                    cy.get('input[name="originZip"]').type(zip);
-                    cy.get('input[value = "Update"]').click();
-                    cy.wait(5000);
-                    cy.get('table>tbody>tr>td.small').then(function (data) {
-                        clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
-                        ProcessZipCluster(zip, clusterList);
-                    });
-                }
-                , err => {
-                    console.log(err);
-                }
-            )
+            cy.request('http://localhost:60957/Home/GetZipcode').as('getzip')
+
+            cy.get('@getzip').should((response) => {
+                let zip = response.body;
+                cy.get('input[name="originZip"]').clear();
+                cy.get('input[name="originZip"]').type(zip);
+                cy.get('input[value = "Update"]').click();
+                cy.wait(5000);
+                cy.get('table>tbody>tr>td.small').then(function (data) {
+                    clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
+                    ProcessZipCluster(zip, clusterList);
+                });
+            })
         }, 10000);
     })
 })
