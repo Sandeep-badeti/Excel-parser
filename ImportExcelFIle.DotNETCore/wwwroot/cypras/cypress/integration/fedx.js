@@ -8,18 +8,19 @@ var zip = "65895";
 
 describe('sample', function () {
     it('sample', async function () {
-        var count = 0;
-        var clusterList = [];
-        // var zip = "";
+        // var count = 0;
+        // var clusterList = [];
+        // // var zip = "";
 
-        cy.visit('http://www.fedex.com/grd/maps/MapEntry.do');
-        GetZipCode();
+        // cy.visit('http://www.fedex.com/grd/maps/MapEntry.do');
+        console.log(zip);   
+        zip = await GetZipCode();
         console.log(zip);   
     
-        cy.get('input[name="originZip"]').type("10038");
-        cy.get('select[name="resType"]').select('YES');
-        cy.get('input[value="View overnight map"]').click();
-        cy.wait(5000);
+        // cy.get('input[name="originZip"]').type("10038");
+        // cy.get('select[name="resType"]').select('YES');
+        // cy.get('input[value="View overnight map"]').click();
+        // cy.wait(5000);
        // console.log(zip); 
         // cy.get('table>tbody>tr>td.small').each(($data, index, $list) => {
            //    console.log($data, index, $list);
@@ -30,20 +31,20 @@ describe('sample', function () {
        // zip = "10310";
 
 
-        while (zip) {
-            console.log(zip);   
-            clusterList = [];
-            console.log(clusterList);
-            cy.get('input[name="originZip"]').clear();
-            cy.get('input[name="originZip"]').type(zip);
-            cy.get('input[value = "Update"]').click();
-            cy.wait(5000);
-            cy.get('table>tbody>tr>td.small').then(function (data) {
-                clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
-                ProcessZipCluster(zip, clusterList);
-            });
-           await GetZipCode();
-        }   
+        // while (zip) {
+        //     console.log(zip);   
+        //     clusterList = [];
+        //     console.log(clusterList);
+        //     cy.get('input[name="originZip"]').clear();
+        //     cy.get('input[name="originZip"]').type(zip);
+        //     cy.get('input[value = "Update"]').click();
+        //     cy.wait(5000);
+        //     cy.get('table>tbody>tr>td.small').then(function (data) {
+        //         clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
+        //         ProcessZipCluster(zip, clusterList);
+        //     });
+        //    zip = await GetZipCode();
+        // }   
     })
 })
 
@@ -65,8 +66,8 @@ function GetZipCode() {
                 (response) => {
                     console.log(zip);
                     console.log(response.body);   
-                    zip = response.body;
-                    resolve();
+                    // zip = response.body;
+                    resolve(response.body);
                     
                 }
                 , err => {
