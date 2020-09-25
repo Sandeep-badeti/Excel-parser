@@ -1,48 +1,32 @@
-﻿// import zipcode from '../../fixtures/zipCode.json'
-// import zipCodes from '../fixtures/zipCode.json'
-//import zipcode from '../fixtures/zipCode.json'
+﻿
 
-const FEDEX_URL = 'http://www.fedex.com/grd/maps/MapEntry.do'
-const RESULTS_URL = 'http://www.fedex.com/grd/maps/MapResult.do'
-
-
-        var clusterList = [];
+ var clusterList = [];
 describe('sample', function () {
     it('sample', function () {
-        cy.visit('http://www.fedex.com/grd/maps/MapEntry.do');
-
-
-        cy.get('input[name="originZip"]').type("10038");
-        cy.get('select[name="resType"]').select('YES');
-        cy.get('input[value="View overnight map"]').click();
-        cy.wait(5000);
-
-        GetZipCode();
+        ResetZipcode();
     });
-
 });
  
-
    function GetZipCode() {
     cy
         .request('GET', 'https://milliardswhobackend.azurewebsites.net/api/ZipCluster/getzipcode')
         .then((response) => {
-            let zip = '59248';  //response.body;
+            let zip =response.body;
             cy.get('input[name="originZip"]').clear();
-            cy.get('input[name="originZip"]').type(zip);
+            cy.get('input[name="originZip"]').type(zip);;
             cy.get('input[value = "Update"]').click();
-            //cy.wait(5000);
-            if(cy.url() == RESULTS_URL){
-                cy.get('table>tbody>tr>td.small').then(function (data) {
-                    clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
-                    ProcessZipCluster(zip, clusterList);
-                });
-            } else {
-                
-            }
-        });
+            cy.get('body').then(($body) => {
+                if ($body.text().includes('View Outbound Map')) {
+                    ResetZipcode();
+                } else {
+                    cy.get('table>tbody>tr>td.small').then(function (data) {
+                        clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
+                        ProcessZipCluster(zip, clusterList);
+                    });
+                }
+            })
+        });  
 }
-
 
 function ProcessZipCluster(zipcode, data) {
    var ZipList = [];
@@ -54,6 +38,14 @@ function ProcessZipCluster(zipcode, data) {
     PostToDB(ZipList);
 }
 
+function ResetZipcode() {
+    cy.visit('http://www.fedex.com/grd/maps/MapEntry.do');
+    cy.get('input[name="originZip"]').type("10038");
+    cy.get('select[name="resType"]').select('YES');
+    cy.get('input[value="View overnight map"]').click();
+    cy.wait(5000);
+    GetZipCode();
+}
 
 function PostToDB(_data) {
     cy
