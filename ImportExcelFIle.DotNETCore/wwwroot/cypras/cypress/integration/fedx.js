@@ -2,7 +2,8 @@
 // import zipCodes from '../fixtures/zipCode.json'
 //import zipcode from '../fixtures/zipCode.json'
 
-
+const FEDEX_URL = 'http://www.fedex.com/grd/maps/MapEntry.do'
+const RESULTS_URL = 'http://www.fedex.com/grd/maps/MapResult.do'
 
 
         var clusterList = [];
@@ -26,15 +27,19 @@ describe('sample', function () {
     cy
         .request('GET', 'https://milliardswhobackend.azurewebsites.net/api/ZipCluster/getzipcode')
         .then((response) => {
-            let zip = response.body;
+            let zip = '59248';  //response.body;
             cy.get('input[name="originZip"]').clear();
             cy.get('input[name="originZip"]').type(zip);
             cy.get('input[value = "Update"]').click();
             //cy.wait(5000);
-            cy.get('table>tbody>tr>td.small').then(function (data) {
-                clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
-                ProcessZipCluster(zip, clusterList);
-            });
+            if(cy.url() == RESULTS_URL){
+                cy.get('table>tbody>tr>td.small').then(function (data) {
+                    clusterList = data.text().match(new RegExp('.{1,' + 13 + '}', 'g'));
+                    ProcessZipCluster(zip, clusterList);
+                });
+            } else {
+                
+            }
         });
 }
 
